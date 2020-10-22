@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable strict */
 const store = {
   items: [
     { id: cuid(), name: 'apples', checked: false },
@@ -26,6 +28,7 @@ const generateItemElement = function (item) {
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
         </button>
+        <button type='submit' class='rename-submit'>rename</button>
       </div>
     </li>`;
 };
@@ -95,6 +98,21 @@ const getItemIdFromElement = function (item) {
     .data('item-id');
 };
 
+const renameItem = function(id) {
+  const item = store.items.find(item => item.id === id);
+  const newItem = $('.new-item-name').val();
+  item.name = newItem;
+};
+
+const handleRenameSubmit = function() {
+  $('.rename-submit').click(function (e) {
+    const id = getItemIdFromElement(e.currentTarget);
+    renameItem(id);
+    render();
+  });
+};
+
+
 /**
  * Responsible for deleting a list item.
  * @param {string} id 
@@ -160,6 +178,7 @@ const handleShoppingList = function () {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleFilterClick();
+  handleRenameSubmit();
 };
 
 // when the page loads, call `handleShoppingList`
